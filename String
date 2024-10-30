@@ -1,0 +1,119 @@
+//
+// Created by lyudv on 30.10.2024.
+//
+
+#include "String.h"
+
+String::String() {
+    data = nullptr;
+    length = 0;
+}
+
+String::String(const char* str) {
+    length = std::strlen(str);
+    data = new char[length + 1];
+    std::strcpy(data, str);
+}
+
+String::~String(){
+    delete[] data;
+    length = 0;
+}
+
+String::String(const String& other){
+    length = other.length;
+    data = new char[length+1];
+
+    for(int i = 0; i < other.size(); ++i){
+        data[i] = other.data[i];
+    }
+    data[length] = '\0';
+}
+
+String::String(String&& other) noexcept {
+    data = other.data;
+    length = other.length;
+
+    other.data = nullptr;
+    other.length = 0;
+}
+
+String& String::operator=(String&& other) noexcept {
+    if (this != &other) {
+        delete[] data;
+        data = other.data;
+        length = other.length;
+
+        other.data = nullptr;
+        other.length = 0;
+    }
+
+    return *this;
+}
+String& String::operator=(const String& other) {
+    if (this == &other) {
+        return *this;
+    }
+
+    delete[] data;
+
+    length = other.length;
+    data = new char[length + 1];
+    std::strcpy(data, other.data);
+
+    return *this;
+}
+
+String String::operator+(const String& other) const {
+
+    int newLength = length + other.length;
+    char* newData = new char[newLength + 1];
+
+    for (int i = 0; i < length; ++i) {
+        newData[i] = data[i];
+    }
+
+    for (int i = 0; i < other.length; ++i) {
+        newData[length + i] = other.data[i];
+    }
+
+    newData[newLength] = '\0';
+    String rsl = String(newData);
+    delete[] newData;
+
+    return rsl;
+}
+
+bool String::operator==(const String& other) const {
+    if(other.size() != length) return false;
+    for(int i = 0; i < other.size(); ++i){
+        if(data[i] != other.data[i]) return false;
+    }
+    return true;
+
+}
+
+bool String::operator!=(const String& other) const {
+    return !(*this == other);
+}
+
+int String::size() const {
+    return length;
+}
+const char* String::c_str() const {
+    return data;
+}
+
+char& String::operator[](int index) {
+     if(index >= length || index < 0){
+         throw("out of range");
+     }
+     return data[index];
+}
+
+const char& String::operator[](int index) const {
+    if(index >= length || index < 0){
+        throw("out of range");
+    }
+    return data[index];
+}
