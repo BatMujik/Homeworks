@@ -1,0 +1,9 @@
+int alternatingCharacters(string s) {
+    int d = 0;
+    for (int i = 1; i < s.length(); i++) {
+        if (s[i] == s[i - 1]) {
+            d++;
+        }
+    }
+    return d;
+}
