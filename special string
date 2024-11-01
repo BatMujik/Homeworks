@@ -1,0 +1,30 @@
+long substrCount(int n, string s) {
+    std::vector<std::pair<char, int>> counts;
+    char current_char = s[0];
+    int current_count = 1;
+
+    for (int i = 1; i < n; ++i) {
+        if (s[i] == current_char) {
+            current_count++;
+        } else {
+            counts.emplace_back(current_char, current_count);
+            current_char = s[i];
+            current_count = 1;
+        }
+    }
+    counts.emplace_back(current_char, current_count);
+
+    long total_special_substrings = 0;
+
+    for (const auto& count : counts) {
+        total_special_substrings += (count.second * (count.second + 1)) / 2;
+    }
+
+    for (int i = 1; i < counts.size() - 1; ++i) {
+        if (counts[i - 1].first == counts[i + 1].first && counts[i].second == 1) {
+            total_special_substrings += std::min(counts[i - 1].second, counts[i + 1].second);
+        }
+    }
+
+    return total_special_substrings;
+}
