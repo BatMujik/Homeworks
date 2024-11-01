@@ -1,0 +1,18 @@
+int makeAnagram(string a, string b) {
+unordered_map<char, int> angMap;
+    
+    for (char c : a) {
+        angMap[c]++;
+    }
+    
+    for (char c : b) {
+        angMap[c]--;
+    }
+    
+    int del = 0;
+    for (const auto& pair : angMap) {
+        del += abs(pair.second);
+    }
+    
+    return del;
+}
